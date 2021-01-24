@@ -1,14 +1,10 @@
 import React from "react";
 import {
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
   Chip,
   Select,
   MenuItem
 } from "@material-ui/core";
+import MUIDataTable from "mui-datatables";
 import useStyles from "../../styles";
 
 const states = {
@@ -17,47 +13,92 @@ const states = {
   declined: "secondary",
 };
 
-export default function TableComponent({ data }) {
+export default function TableComponent({ data, completedTable }) {
   const classes = useStyles();
   console.log(data);
+
+  const columns = [
+    {
+      name: "qNumber",
+      label: "Queue Number",
+      options: {
+        filter: false,
+      }
+    },
+    {
+      name: "name",
+      label: "Name"
+    },
+    {
+      name: "phoneNumber",
+      label: "Phone Number"
+    },
+    {
+      name: "status",
+      label: "Status",
+      options: {
+        customBodyRender: function (value, tableMeta, updateValue) {
+          return <Chip label={value[0].toUpperCase() + value.slice(1)} classes={{ root: classes[states[value]] }} />
+        }
+      }
+    },
+    {
+      name: "changeStatus",
+      label: "Change Status",
+      options: {
+        filter: false,
+        customBodyRender: function (value, tableMeta, updateValue) {
+          return (
+            <Select value={"update"} className={classes.selectEmpty} autoWidth onChange={handleStatusUpdate}>
+              <MenuItem value="update" disabled>
+                Update
+                </MenuItem>
+              {completedTable ?
+                <MenuItem value={"waiting"}>Waiting</MenuItem>
+                :
+                <MenuItem value={"completed"}>Completed</MenuItem>
+              }
+              <MenuItem value={"inside"}>Inside</MenuItem>
+              <MenuItem value={"cancelled"}>Cancelled</MenuItem>
+              <MenuItem value={"late"}>Late</MenuItem>
+            </Select>
+          );
+        }
+      }
+    }
+  ]
+
+  const options = {
+    download: false,
+    print: false,
+    selectableRowsHeader: false,
+    selectableRows: "none",
+    sort: completedTable,
+    viewColumns: completedTable
+  }
 
   const handleStatusUpdate = (event) => {
     console.log(event.target);
   }
 
-  return (
-    <Table className="mb-0">
-      <TableHead>
-        <TableRow>
-          <TableCell key="qNumber">Queue Number</TableCell>
-          <TableCell key="name">Name</TableCell>
-          <TableCell key="phoneNumber">Phone Number</TableCell>
-          <TableCell key="status">Status</TableCell>
-          <TableCell key="changeStatus">Change Status</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data.map(({ qNumber, firstName, lastName, phoneNumber, status = "Pending" }) => (
-          <TableRow key={qNumber}>
-            <TableCell >{qNumber}</TableCell>
-            <TableCell className="pl-3 fw-normal">{firstName + ' ' + lastName}</TableCell>
-            <TableCell>{phoneNumber}</TableCell>
-            <TableCell>
-              <Chip label={status[0].toUpperCase() + status.slice(1)} classes={{ root: classes[states[status]] }} />
-            </TableCell>
-            <TableCell>
-              <Select value={"update"} className={classes.selectEmpty} autoWidth onChange={handleStatusUpdate}>
-                <MenuItem value="update" disabled>
-                  Update
-                </MenuItem>
-                <MenuItem value={"completed"}>Completed</MenuItem>
-                <MenuItem value={"cancelled"}>Cancelled</MenuItem>
-                <MenuItem value={"late"}>Late</MenuItem>
-              </Select>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+  if (completedTable) {
+    return (
+      <MUIDataTable
+        title="Previous Patients"
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    );
+  } else {
+    return (
+      <MUIDataTable
+        title="People in Queue"
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    );
+  }
+
 }

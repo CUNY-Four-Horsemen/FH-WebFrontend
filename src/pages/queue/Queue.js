@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Grid } from "@material-ui/core";
+import { Grid, Chip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+
 
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
-import Widget from "../../components/Widget/Widget";
 import Table from "./components/Table/Table";
 
 const useStyles = makeStyles(theme => ({
   tableOverflow: {
     overflow: 'auto'
+  },
+  success: {
+    backgroundColor: theme.palette.success.main,
+    color: '#fff',
+  },
+  warning: {
+    backgroundColor: theme.palette.warning.main,
+    color: '#fff',
+  },
+  secondary: {
+    backgroundColor: theme.palette.secondary.main,
+    color: '#fff',
   }
 }))
 
@@ -42,14 +54,10 @@ export default function Tables() {
       <PageTitle title="Queue" />
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <Widget title="People in Queue" upperTitle disableWidgetMenu noBodyPadding bodyClass={classes.tableOverflow}>
-            {patients ? <Table data={patients.uncompletedP} /> : 'Fetching Queue...'}
-          </Widget>
+          {patients ? <Table data={patients.uncompletedP} completedTable={false} /> : 'Fetching Queue...'}
         </Grid>
         <Grid item xs={12}>
-          <Widget title="Previous Patients" upperTitle disableWidgetMenu noBodyPadding bodyClass={classes.tableOverflow}>
-            {patients ? <Table data={patients.completedP} /> : 'Fetching Queue...'}
-          </Widget>
+          {patients ? <Table data={patients.completedP} completedTable={true} /> : 'Fetching Queue...'}
         </Grid>
       </Grid>
     </>
