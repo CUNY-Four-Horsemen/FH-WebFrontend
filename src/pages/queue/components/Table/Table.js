@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Chip,
   Select,
-  MenuItem
+  MenuItem,
+  FormLabel,
 } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import axios from "axios";
@@ -10,9 +11,9 @@ import axios from "axios";
 import useStyles from "../../styles";
 
 const states = {
-  completed: "success",
-  waiting: "warning",
-  cancelled: "secondary",
+  completed: "completed",
+  waiting: "waiting",
+  cancelled: "cancelled",
   inside: "inside",
   late: "late"
 };
@@ -44,6 +45,38 @@ export default function TableComponent({ data, completedTable, handleStatusChang
     {
       name: "phoneNumber",
       label: "Phone Number"
+    },
+    {
+      name: "checkInTime",
+      label: "Check-In Time",
+      options: {
+        customBodyRender: function (value, tableMeta, updateValue) {
+          let d = new Date(1000 * value["_seconds"])
+          let hours = String(d.getHours());
+          let minutes = String(d.getMinutes());
+          let seconds = String(d.getSeconds());
+          return (hours.length > 1 ? hours : ("0" + hours)) + ":"
+            + (minutes.length > 1 ? minutes : ("0" + minutes)) + ":"
+            + (seconds.length > 1 ? seconds : ("0" + seconds))
+        },
+        filter: false
+      }
+    },
+    {
+      name: "lastUpdate",
+      label: "Last Updated",
+      options: {
+        customBodyRender: function (value, tableMeta, updateValue) {
+          let d = new Date(1000 * value["_seconds"])
+          let hours = String(d.getHours());
+          let minutes = String(d.getMinutes());
+          let seconds = String(d.getSeconds());
+          return (hours.length > 1 ? hours : ("0" + hours)) + ":"
+            + (minutes.length > 1 ? minutes : ("0" + minutes)) + ":"
+            + (seconds.length > 1 ? seconds : ("0" + seconds))
+        },
+        filter: false
+      }
     },
     {
       name: "status",
@@ -86,7 +119,7 @@ export default function TableComponent({ data, completedTable, handleStatusChang
     let id;
     let newData = [...data];
     for (let d = 0; d < newData.length; d++) {
-      if (newData[d].qNumber == parseInt(qNumber)) {
+      if (newData[d].qNumber === parseInt(qNumber)) {
         id = newData[d].id;
         newData[d].status = status;
         break;
@@ -99,8 +132,8 @@ export default function TableComponent({ data, completedTable, handleStatusChang
         status: status
       }
     ).then((response) => {
-      console.log(response.status == 200);
-      if (response.status == 200) {
+      console.log(response.status === 200);
+      if (response.status === 200) {
         console.log(newData, data);
         handleStatusChange(newData, completedTable);
       }

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Grid, Chip } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-
+import { Grid } from "@material-ui/core";
 
 // components
 import PageTitle from "../../components/PageTitle/PageTitle";
@@ -42,6 +40,9 @@ export default function Tables() {
     } else {
       merged = newArray.concat(patients.completedP);
     }
+    console.log(merged);
+    merged = merged.sort((a, b) => (a.qNumber > b.qNumber) ? 1 : -1);
+    console.log(merged);
     separatePatients(merged);
   }
 

@@ -115,16 +115,16 @@ export default makeStyles(theme => ({
     fontSize: "18px !important",
     marginLeft: theme.spacing(1),
   },
-  success: {
-    backgroundColor: theme.palette.success.main,
+  completed: {
+    backgroundColor: "darkgreen",
     color: '#fff',
   },
-  warning: {
-    backgroundColor: theme.palette.warning.main,
+  waiting: {
+    backgroundColor: "orange",
     color: '#fff',
   },
-  secondary: {
-    backgroundColor: theme.palette.secondary.main,
+  cancelled: {
+    backgroundColor: "indianred",
     color: '#fff',
   },
   late: {

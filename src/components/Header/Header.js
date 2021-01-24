@@ -1,21 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   AppBar,
   Toolbar,
   IconButton,
-  InputBase,
-  Menu,
-  MenuItem,
-  Fab,
-  Link
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
-  MailOutline as MailIcon,
-  NotificationsNone as NotificationsIcon,
-  Person as AccountIcon,
-  Search as SearchIcon,
-  Send as SendIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
 import classNames from "classnames";
