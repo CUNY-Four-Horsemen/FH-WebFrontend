@@ -5,19 +5,25 @@ import {
   TableHead,
   TableBody,
   TableCell,
-  Chip
+  Chip,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import useStyles from "../../styles";
 
 const states = {
-  sent: "success",
-  pending: "warning",
+  completed: "success",
+  waiting: "warning",
   declined: "secondary",
 };
 
 export default function TableComponent({ data }) {
   const classes = useStyles();
   console.log(data);
+
+  const handleStatusUpdate = (event) => {
+    console.log(event.target);
+  }
 
   return (
     <Table className="mb-0">
@@ -27,6 +33,7 @@ export default function TableComponent({ data }) {
           <TableCell key="name">Name</TableCell>
           <TableCell key="phoneNumber">Phone Number</TableCell>
           <TableCell key="status">Status</TableCell>
+          <TableCell key="changeStatus">Change Status</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -36,7 +43,17 @@ export default function TableComponent({ data }) {
             <TableCell className="pl-3 fw-normal">{firstName + ' ' + lastName}</TableCell>
             <TableCell>{phoneNumber}</TableCell>
             <TableCell>
-              <Chip label={status} classes={{ root: classes[states[status.toLowerCase()]] }} />
+              <Chip label={status[0].toUpperCase() + status.slice(1)} classes={{ root: classes[states[status]] }} />
+            </TableCell>
+            <TableCell>
+              <Select value={"update"} className={classes.selectEmpty} autoWidth onChange={handleStatusUpdate}>
+                <MenuItem value="update" disabled>
+                  Update
+                </MenuItem>
+                <MenuItem value={"completed"}>Completed</MenuItem>
+                <MenuItem value={"cancelled"}>Cancelled</MenuItem>
+                <MenuItem value={"late"}>Late</MenuItem>
+              </Select>
             </TableCell>
           </TableRow>
         ))}

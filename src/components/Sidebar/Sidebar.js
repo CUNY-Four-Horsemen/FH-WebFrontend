@@ -3,8 +3,6 @@ import { Drawer, IconButton, List } from "@material-ui/core";
 import {
   Home as HomeIcon,
   BugReport as DebugIcon,
-  Create as CRUDIcon,
-  HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
   CenterFocusStrong as QRReaderIcon
 } from "@material-ui/icons";
@@ -17,7 +15,6 @@ import useStyles from "./styles";
 
 // components
 import SidebarLink from "./components/SidebarLink/SidebarLink";
-import Dot from "./components/Dot";
 
 // context
 import {

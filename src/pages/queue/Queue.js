@@ -23,19 +23,32 @@ export default function Tables() {
       const result = await axios(
         "http://localhost:5001/cuny-four-horsemen/us-central1/api/patients"
       );
-      console.log(result.data);
-      setData(result.data);
+      let uncompletedP = [];
+      let completedP = [];
+      for (let p of result.data) {
+        if (p.status === "completed" || p.status === "cancelled") {
+          completedP.push(p);
+        } else {
+          uncompletedP.push(p);
+        }
+      }
+      setData({ uncompletedP: uncompletedP, completedP: completedP });
     }
     fetchPatients();
   }, []);
 
   return (
     <>
-      <PageTitle title="Tables" />
+      <PageTitle title="Queue" />
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <Widget title="Material-UI Table" upperTitle noBodyPadding bodyClass={classes.tableOverflow}>
-            {patients ? <Table data={patients} /> : 'Fetching Queue...'}
+          <Widget title="People in Queue" upperTitle disableWidgetMenu noBodyPadding bodyClass={classes.tableOverflow}>
+            {patients ? <Table data={patients.uncompletedP} /> : 'Fetching Queue...'}
+          </Widget>
+        </Grid>
+        <Grid item xs={12}>
+          <Widget title="Previous Patients" upperTitle disableWidgetMenu noBodyPadding bodyClass={classes.tableOverflow}>
+            {patients ? <Table data={patients.completedP} /> : 'Fetching Queue...'}
           </Widget>
         </Grid>
       </Grid>
