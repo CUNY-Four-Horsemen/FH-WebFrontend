@@ -126,5 +126,13 @@ export default makeStyles(theme => ({
   secondary: {
     backgroundColor: theme.palette.secondary.main,
     color: '#fff',
-  }
+  },
+  late: {
+    backgroundColor: theme.palette.text.primary,
+    color: '#fff',
+  },
+  inside: {
+    backgroundColor: theme.palette.info.main,
+    color: '#fff',
+  },
 }));
